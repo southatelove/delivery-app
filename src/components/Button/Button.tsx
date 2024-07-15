@@ -20,11 +20,19 @@ import cn from "classnames";
 //   );
 // };
 
-export const Button = ({ children, className, ...props }: ButtonProps) => {
+export const Button = ({
+  children,
+  className,
+  size = "small",
+  ...props
+}: ButtonProps) => {
   return (
     <>
       <button
-        className={cn(styles["button"], styles["accent"], className)}
+        className={cn(styles["button"], styles["accent"], className, {
+          [styles["small"]]: size === "small",
+          [styles["big"]]: size === "big",
+        })}
         {...props}
       >
         {children}
