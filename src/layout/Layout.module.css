@@ -64,3 +64,8 @@
   line-height: normal;
   color: var(--text-email-color);
 }
+
+.content {
+  padding: 40px 60px;
+  width: 100%;
+}
