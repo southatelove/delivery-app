@@ -4,12 +4,14 @@ import { ProductCardProps } from "./ProductCard.props";
 
 export const ProductCard = ({
   id,
-  title,
+  name,
   description,
   image,
   price,
   rating,
 }: ProductCardProps) => {
+  console.log(description);
+
   return (
     <>
       <Link to={`/product/${id}`} className={styles["link"]}>
@@ -31,7 +33,7 @@ export const ProductCard = ({
             </div>
           </div>
           <div className={styles["footer"]}>
-            <div className={styles["title"]}>{title}</div>
+            <div className={styles["title"]}>{name}</div>
             <div className={styles["description"]}>{description}</div>
           </div>
         </div>
