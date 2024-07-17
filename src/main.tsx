@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 
 import "./index.css";
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, defer, RouterProvider } from "react-router-dom";
 
 import Cart from "./pages/Cart/Cart";
 import Error from "./pages/Error/Error";
@@ -36,8 +36,16 @@ const router = createBrowserRouter([
         element: <InfoProduct />,
         errorElement: <>Ошибка</>,
         loader: async ({ params }) => {
-          const { data } = await axios.get(`${PREFIX}/products/${params.id}`);
-          return data;
+          return defer({
+            // возвращаем Promise
+
+            data: axios
+              .get(`${PREFIX}/products/${params.id}`)
+              .then((data) => data),
+          });
+
+          // const { data } = await axios.get(`${PREFIX}/products/${params.id}`);
+          // return data;
         },
       },
     ],
