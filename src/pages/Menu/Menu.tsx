@@ -5,18 +5,32 @@ import { Search } from "../../components/Search/Search";
 import { PREFIX } from "../../helpers/API";
 import { Product } from "../../interfaces/product.interface";
 import styles from "./Menu.module.css";
+import axios from "axios";
 
 export const Menu = () => {
   const [products, setProducts] = useState<Product[]>([]);
 
+  // useEffect(() => {
+  //   const getMenu = async () => {
+  //     try {
+  //       const res = await fetch(`${PREFIX}/products`);
+  //       if (!res.ok) {
+  //         return;
+  //       }
+  //       const data = (await res.json()) as Product[];
+  //       setProducts(data);
+  //     } catch (error) {
+  //       console.error(error);
+  //       return;
+  //     }
+  //   };
+  //   getMenu();
+  // }, []);
+
   useEffect(() => {
     const getMenu = async () => {
       try {
-        const res = await fetch(`${PREFIX}/products`);
-        if (!res.ok) {
-          return;
-        }
-        const data = (await res.json()) as Product[];
+        const { data } = await axios.get<Product[]>(`${PREFIX}/products`);
         setProducts(data);
       } catch (error) {
         console.error(error);
