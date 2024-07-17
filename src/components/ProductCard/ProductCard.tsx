@@ -10,8 +10,6 @@ export const ProductCard = ({
   price,
   rating,
 }: ProductCardProps) => {
-  console.log(description);
-
   return (
     <>
       <Link to={`/product/${id}`} className={styles["link"]}>

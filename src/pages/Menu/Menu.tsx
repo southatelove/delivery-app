@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import { Headling } from "../../components/Headling/Headling";
-import { ProductCard } from "../../components/ProductCard/ProductCard";
 import { Search } from "../../components/Search/Search";
 import { PREFIX } from "../../helpers/API";
 import { Product } from "../../interfaces/product.interface";
 import styles from "./Menu.module.css";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { MenuList } from "./MenuList/MenuList";
 
 export const Menu = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | undefined>();
 
   // useEffect(() => {
   //   const getMenu = async () => {
@@ -30,10 +32,21 @@ export const Menu = () => {
   useEffect(() => {
     const getMenu = async () => {
       try {
+        setIsLoading(true);
+        await new Promise<void>((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 2000);
+        });
         const { data } = await axios.get<Product[]>(`${PREFIX}/products`);
         setProducts(data);
+        setIsLoading(false);
       } catch (error) {
         console.error(error);
+        if (error instanceof AxiosError) {
+          setError(error.message);
+        }
+        setIsLoading(false);
         return;
       }
     };
@@ -46,17 +59,9 @@ export const Menu = () => {
         <Headling>Меню</Headling>
         <Search placeholder="Введите блюдо или состав" />
       </div>
-      {products.map((product) => (
-        <ProductCard
-          key={product.id}
-          id={product.id}
-          name={product.name}
-          description={product.ingredients.join(", ")}
-          price={product.price}
-          rating={product.rating}
-          image={product.image}
-        />
-      ))}
+      {error && <>{error}</>}
+      {!isLoading && <MenuList products={products} />}
+      {isLoading && <>Загружаем продукты...</>}
     </>
   );
 };
