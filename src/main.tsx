@@ -1,15 +1,18 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 
 import "./index.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { Menu } from "./pages/Menu/Menu";
 import Cart from "./pages/Cart/Cart";
 import Error from "./pages/Error/Error";
 import Layout from "./layout/Layout";
-import { Product } from "./pages/Product/Product";
+import { InfoProduct } from "./pages/InfoProduct/InfoProduct";
+import axios from "axios";
+import { PREFIX } from "./helpers/API";
+
+const Menu = lazy(() => import("./pages/Menu/Menu"));
 
 const router = createBrowserRouter([
   {
@@ -18,7 +21,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Menu />,
+        element: (
+          <Suspense fallback={<>Загрузка Меню...</>}>
+            <Menu />
+          </Suspense>
+        ),
       },
       {
         path: "/cart",
@@ -26,7 +33,12 @@ const router = createBrowserRouter([
       },
       {
         path: "/product/:id",
-        element: <Product />,
+        element: <InfoProduct />,
+        errorElement: <>Ошибка</>,
+        loader: async ({ params }) => {
+          const { data } = await axios.get(`${PREFIX}/products/${params.id}`);
+          return data;
+        },
       },
     ],
   },
