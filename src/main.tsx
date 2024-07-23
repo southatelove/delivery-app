@@ -21,6 +21,7 @@ import { store } from "./store/store";
 const Menu = lazy(() => import("./pages/Menu/Menu"));
 
 const router = createBrowserRouter([
+  // Основной Layout (Panel)
   {
     path: "/",
     element: (
@@ -60,6 +61,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+  // Layout Авторизации и Регистрации
   {
     path: "/auth",
     element: <AuthLayout />,

@@ -8,7 +8,7 @@ export const AuthLayout = () => {
         <img src="/logo.svg" alt="логотип" />
       </div>
       <div className={styles["content"]}>
-        <Outlet></Outlet>
+        <Outlet />
       </div>
     </div>
   );

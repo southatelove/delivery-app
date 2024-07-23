@@ -47,7 +47,8 @@ export default function Login() {
         email,
         password,
       });
-      localStorage.setItem("jwt", data.access_token);
+      // localStorage.setItem("jwt", data.access_token);
+      // Прокидывание token в redux.store
       dispatch(userActions.addJwt(data.access_token));
       navigate("/");
     } catch (error) {
