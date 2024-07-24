@@ -1,13 +1,13 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { loadState } from "./storage";
-import axios from "axios";
+import axios, { Axios, AxiosError } from "axios";
 import { PREFIX } from "../helpers/API";
 import { LoginResponse } from "../interfaces/auth.interface";
 
 export const JWT_PERSISTENT_STATE = "userData";
 export interface UserState {
   jwt: string | null;
-  loginState: null | "rejected";
+  loginErrorMessage?: null | string;
 }
 export interface UserPersistensState {
   jwt: string | null;
@@ -15,17 +15,32 @@ export interface UserPersistensState {
 
 const initialState: UserState = {
   jwt: loadState<UserPersistensState>(JWT_PERSISTENT_STATE)?.jwt ?? null,
-  loginState: null,
 };
 
+// export const login = createAsyncThunk(
+//   "user/login",
+//   async (params: { email: string; password: string }) => {
+//     const { data } = await axios.post<LoginResponse>(`${PREFIX}/auth/login`, {
+//       email: params.email,
+//       password: params.password,
+//     });
+//     return data;
+//   }
+// );
 export const login = createAsyncThunk(
   "user/login",
   async (params: { email: string; password: string }) => {
-    const { data } = await axios.post<LoginResponse>(`${PREFIX}/auth/login`, {
-      email: params.email,
-      password: params.password,
-    });
-    return data;
+    try {
+      const { data } = await axios.post<LoginResponse>(`${PREFIX}/auth/login`, {
+        email: params.email,
+        password: params.password,
+      });
+      return data;
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        throw new Error(e.response?.data.message);
+      }
+    }
   }
 );
 
@@ -39,16 +54,22 @@ export const userSlice = createSlice({
     logout: (state) => {
       state.jwt = null;
     },
+    clearLoginError: (state) => {
+      state.loginErrorMessage = undefined;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
       login.fulfilled,
       (state, action: PayloadAction<LoginResponse>) => {
+        if (!action.payload) {
+          return;
+        }
         state.jwt = action.payload.access_token;
       }
     );
-    builder.addCase(login.rejected, (state, error) => {
-      console.log(error);
+    builder.addCase(login.rejected, (state, action) => {
+      state.loginErrorMessage = action.error.message;
     });
   },
 });

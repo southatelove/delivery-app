@@ -8,6 +8,7 @@ export const store = configureStore({
   },
 });
 
+// Отработка при изменении состояния store
 store.subscribe(() => {
   saveState({ jwt: store.getState().user.jwt }, JWT_PERSISTENT_STATE);
 });
