@@ -11,6 +11,8 @@ import { useEffect } from "react";
 export default function Layout() {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const items = useSelector((s: RootState) => s.cart.items);
+  console.log("render", items);
 
   const profile = useSelector((s: RootState) => s.user.profile);
 
@@ -54,6 +56,7 @@ export default function Layout() {
               <img src="/cart.svg" alt="cart" />
               Корзина
             </NavLink>
+            {items.reduce((acc, item) => (acc += item.count), 0)}
           </div>
           <Button className={styles["exit"]} onClick={logout}>
             <img src="/exit.svg" alt="exit" />
