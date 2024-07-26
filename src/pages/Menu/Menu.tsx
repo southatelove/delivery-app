@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Headling } from "../../components/Headling/Headling";
 import { Search } from "../../components/Search/Search";
 import { PREFIX } from "../../helpers/API";
@@ -11,6 +11,7 @@ const Menu = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>();
+  const [search, setSearch] = useState<string>("");
 
   // useEffect(() => {
   //   const getMenu = async () => {
@@ -29,34 +30,50 @@ const Menu = () => {
   //   getMenu();
   // }, []);
 
-  useEffect(() => {
-    const getMenu = async () => {
-      try {
-        setIsLoading(true);
-        const { data } = await axios.get<Product[]>(`${PREFIX}/products`);
-        setProducts(data);
-        setIsLoading(false);
-      } catch (error) {
-        console.error(error);
-        if (error instanceof AxiosError) {
-          setError(error.message);
-        }
-        setIsLoading(false);
-        return;
+  const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
+  const getMenu = async (search?: string) => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.get<Product[]>(`${PREFIX}/products`, {
+        params: {
+          name: search,
+        },
+      });
+      setProducts(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+      if (error instanceof AxiosError) {
+        setError(error.message);
       }
-    };
+      setIsLoading(false);
+      return;
+    }
+  };
+
+  useEffect(() => {
     getMenu();
   }, []);
+
+  useEffect(() => {
+    getMenu(search);
+  }, [search]);
 
   return (
     <>
       <div className={styles["head"]}>
         <Headling>Меню</Headling>
-        <Search placeholder="Введите блюдо или состав" />
+        <Search placeholder="Введите блюдо или состав" onChange={onSearch} />
       </div>
       {error && <>{error}</>}
       {!isLoading && <MenuList products={products} />}
-      {/* {isLoading && <>Загружаем продукты...</>} */}
+      {isLoading && <>Загружаем продукты...</>}
+      {!isLoading && products.length === 0 && (
+        <>Не найдено блюд по запросу...</>
+      )}
     </>
   );
 };
