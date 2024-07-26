@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Headling } from "../../components/Headling/Headling";
 import { Search } from "../../components/Search/Search";
 import { PREFIX } from "../../helpers/API";
