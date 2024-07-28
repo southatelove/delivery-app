@@ -1,5 +1,5 @@
 import { Headling } from "../../components/Headling/Headling";
-// import styles from "./Cart.module.css";
+import styles from "./Cart.module.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { CartItem } from "../../components/CartItem/CartItem";
@@ -28,7 +28,7 @@ export default function Cart() {
   }, [items]);
   return (
     <>
-      <Headling>Корзина</Headling>
+      <Headling className={styles["headling"]}>Корзина</Headling>
       {items?.map((item) => {
         const product = cartProducts?.find((p) => p.id === item.id);
         if (!product) {

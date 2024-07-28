@@ -3,14 +3,20 @@ import { AppDispatch } from "../../store/store";
 
 import { CartItemProps } from "./CartItem.props";
 import styles from "./CartItem.module.css";
+import { cartActions } from "../../store/cart.slice";
 
 export const CartItem = ({ ...props }: CartItemProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  console.log("dispatch", dispatch);
 
-  const increase = () => {};
-  const decrease = () => {};
-  const remove = () => {};
+  const increase = () => {
+    dispatch(cartActions.add(props.id));
+  };
+  const decrease = () => {
+    dispatch(cartActions.remove(props.id));
+  };
+  const remove = () => {
+    dispatch(cartActions.delete(props.id));
+  };
 
   return (
     <>
@@ -21,19 +27,19 @@ export const CartItem = ({ ...props }: CartItemProps) => {
         ></div>
         <div className={styles["description"]}>
           <div className={styles["name"]}>{props.name}</div>
-          <div className={styles["currency"]}>{props.price}&nbsp;₽</div>
+          <div className={styles["price"]}>{props.price}&nbsp;₽</div>
         </div>
 
         <div className={styles["actions"]}>
-          <button className={styles["button"]} onClick={decrease}>
-            <img src="#" alt="Удалить из корзину" />
+          <button className={styles["minus"]} onClick={decrease}>
+            <img src="/minus.svg" alt="Удалить из корзину" />
           </button>
-          <div>{props.count}</div>
-          <button className={styles["button"]} onClick={increase}>
-            <img src="/cart-button.svg" alt="Добавить в корзину" />
+          <div className={styles["number"]}>{props.count}</div>
+          <button className={styles["plus"]} onClick={increase}>
+            <img src="/plus.svg" alt="Добавить в корзину" />
           </button>
           <button className={styles["remove"]} onClick={remove}>
-            <img src="/cart-button.svg" alt="Удалить все" />
+            <img src="/remove.svg" alt="Удалить все" />
           </button>
         </div>
       </div>
