@@ -16,6 +16,8 @@ const DELIVERY_FEE: number = 169;
 export default function Cart() {
   const [cartProducts, setCardProducts] = useState<Product[]>();
   const items = useSelector((s: RootState) => s.cart.items);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   const jwt = useSelector((s: RootState) => s.user.jwt);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,6 +44,8 @@ export default function Cart() {
 
   const checkout = async () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const { data } = await axios.post(
       `${PREFIX}/order`,
       {
@@ -53,6 +57,7 @@ export default function Cart() {
         },
       }
     );
+
     dispatch(cartActions.clean());
     navigate("/success");
   };

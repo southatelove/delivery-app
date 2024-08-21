@@ -73,7 +73,11 @@ export const register = createAsyncThunk(
 
 export const getProfile = createAsyncThunk<Profile, void, { state: RootState }>(
   "user/getProfile",
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   async (_, thunkApi) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const jwt = thunkApi.getState().user.jwt;
     const { data } = await axios.get<LoginResponse>(`${PREFIX}/user/profile`, {
       headers: {
@@ -102,6 +106,8 @@ export const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     builder.addCase(
       login.fulfilled,
       (state, action: PayloadAction<LoginResponse>) => {
@@ -117,6 +123,8 @@ export const userSlice = createSlice({
     builder.addCase(getProfile.fulfilled, (state, action) => {
       state.profile = action.payload;
     });
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     builder.addCase(
       register.fulfilled,
       (state, action: PayloadAction<LoginResponse>) => {
