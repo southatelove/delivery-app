@@ -8,11 +8,10 @@ export enum Theme {
   LIGHT = "light",
 }
 export interface ThemeState {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
+  theme: Theme | string;
 }
 
-const initialState = {
+const initialState: ThemeState = {
   theme: loadTheme(THEME_PERSISTENT_STATE) ?? "light",
 };
 
