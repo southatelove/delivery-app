@@ -68,12 +68,15 @@ const Menu = () => {
         <Headling>Меню</Headling>
         <Search placeholder="Введите блюдо или состав" onChange={onSearch} />
       </div>
+
       {error && <>{error}</>}
       {!isLoading && <MenuList products={products} />}
-      {isLoading && <>Загружаем продукты...</>}
-      {!isLoading && products.length === 0 && (
-        <>Не найдено блюд по запросу...</>
-      )}
+      <div className={styles["error"]}>
+        {isLoading && <>Загружаем продукты...</>}
+        {!isLoading && products.length === 0 && (
+          <>Не найдено блюд по запросу...</>
+        )}
+      </div>
     </>
   );
 };

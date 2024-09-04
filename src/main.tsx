@@ -19,6 +19,7 @@ import { Provider } from "react-redux";
 import { store } from "./store/store";
 import Success from "./pages/Success/Success";
 import { ThemeProvider } from "./components/ThemeProvider/ThemeProvider";
+import "./styles/index.css";
 
 const Menu = lazy(() => import("./pages/Menu/Menu"));
 
@@ -34,11 +35,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: (
-          <Suspense fallback={<>Загрузка Меню...</>}>
-            <Menu />
-          </Suspense>
-        ),
+        element: <Menu />,
       },
       {
         path: "/success",
