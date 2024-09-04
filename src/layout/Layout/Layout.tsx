@@ -7,6 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { getProfile, userActions } from "../../store/user.slice";
 import { useEffect } from "react";
+import { themeActions } from "../../store/theme.slice";
+
+import { MoonIcon } from "../../assets/icons";
+import { SunIcon } from "../../assets/icons";
 
 export default function Layout() {
   const dispatch = useDispatch<AppDispatch>();
@@ -14,6 +18,15 @@ export default function Layout() {
   const items = useSelector((s: RootState) => s.cart.items);
 
   const profile = useSelector((s: RootState) => s.user.profile);
+
+  const theme = useSelector((s: RootState) => s.theme.theme);
+
+  const themeIcon = theme === "light" ? SunIcon : MoonIcon;
+
+  const themeSwitcher = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    dispatch(themeActions.toggleTheme(newTheme));
+  };
 
   useEffect(() => {
     dispatch(getProfile());
@@ -23,6 +36,7 @@ export default function Layout() {
     dispatch(userActions.logout());
     navigate("/auth/login");
   };
+
   return (
     <>
       <div className={styles["layout"]}>
@@ -59,6 +73,10 @@ export default function Layout() {
               </span>
             </NavLink>
           </div>
+          <Button className={styles["exit"]} onClick={themeSwitcher}>
+            <img src={themeIcon}></img>
+            {`${theme}`}
+          </Button>
           <Button className={styles["exit"]} onClick={logout}>
             <img src="/exit.svg" alt="exit" />
             Выйти

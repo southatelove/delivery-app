@@ -1,0 +1,7 @@
+.app.dark {
+  --bg-color: #03031a;
+  /* --primary-color: #bdc7bd; */
+  /* --text-color: white;
+  --second-text-color: black; */
+  --text-color: white;
+}

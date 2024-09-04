@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 
-import "./index.css";
+import "./styles/index.css";
 
 import { createBrowserRouter, defer, RouterProvider } from "react-router-dom";
 
@@ -18,6 +18,7 @@ import { RequireAuth } from "./helpers/RequireAuth";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 import Success from "./pages/Success/Success";
+import { ThemeProvider } from "./components/ThemeProvider/ThemeProvider";
 
 const Menu = lazy(() => import("./pages/Menu/Menu"));
 
@@ -90,7 +91,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </Provider>
   </React.StrictMode>
 );

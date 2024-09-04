@@ -1,0 +1,12 @@
+@import "reset";
+@import "themes/dark";
+@import "themes/light";
+@import "variables/global";
+
+body {
+  font-family: "Open Sans", sans-serif;
+}
+
+.app {
+  background: var(--bg-color);
+}
