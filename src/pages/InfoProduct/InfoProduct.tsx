@@ -61,7 +61,7 @@ export function InfoProduct() {
                     <p>Состав:</p>
                     <div className={styles["ingredients"]}>
                       {data.ingredients.map((ingredient) => (
-                        <ul>
+                        <ul key={ingredient}>
                           <li>{ingredient}</li>
                         </ul>
                       ))}
